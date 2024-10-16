@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_IMAGE_RESOURCE = "imageResource";
 
     private static final String CREATE_TABLE_PRODUCTS = "CREATE TABLE " + TABLE_PRODUCTS + " (" +
-            KEY_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             KEY_NAME + " TEXT NOT NULL, " +
             KEY_DESCRIPTION + " TEXT, " +
             KEY_SELLER + " TEXT, " +

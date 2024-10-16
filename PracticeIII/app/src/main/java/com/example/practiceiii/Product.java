@@ -3,7 +3,9 @@ package com.example.practiceiii;
 import android.media.Image;
 import android.os.Bundle;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     public int id;
     public String name;
     public String description;

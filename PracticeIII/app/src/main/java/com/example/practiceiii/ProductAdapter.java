@@ -1,5 +1,6 @@
 package com.example.practiceiii;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<Product> productList;
+    private List<Product> selectedProducts = new ArrayList<>();
 
-    public ProductAdapter(List<Product> productList) {
+    // Constructor for MainActivity
+    public ProductAdapter(MainActivity mainActivity, List<Product> productList) {
         this.productList = productList;
+    }
+
+    // Overloaded constructor for SecondActivity
+    public ProductAdapter(SecondActivity secondActivity, List<Product> selectedProducts) {
+        this.productList = selectedProducts; // Use selected products list
     }
 
     @NonNull
@@ -29,9 +38,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.productName.setText(product.name);
-        holder.productPrice.setText(String.valueOf(product.price));
-        holder.productImage.setImageResource(product.imageResource); // Assuming you have an image resource
+        holder.bind(product);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (selectedProducts.contains(product)) {
+                selectedProducts.remove(product);
+                holder.itemView.setBackgroundColor(Color.WHITE); // Deselect
+            } else {
+                selectedProducts.add(product);
+                holder.itemView.setBackgroundColor(Color.LTGRAY); // Select
+            }
+        });
     }
 
     @Override
@@ -46,9 +63,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            productName = itemView.findViewById(R.id.product_name);
-            productPrice = itemView.findViewById(R.id.product_price);
-            productImage = itemView.findViewById(R.id.product_image);
+            productName = itemView.findViewById(R.id.productName);
+            productPrice = itemView.findViewById(R.id.productPrice);
+            productImage = itemView.findViewById(R.id.productImage);
         }
+
+        public void bind(Product product) {
+            productName.setText(product.name);
+            productPrice.setText(String.valueOf(product.price));
+            productImage.setImageResource(product.imageResource); // Set the image resource
+        }
+    }
+
+    // Method to retrieve selected products
+    public List<Product> getSelectedProducts() {
+        return selectedProducts;
     }
 }
