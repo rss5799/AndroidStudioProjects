@@ -5,12 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast; // Import Toast
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList; // Import ArrayList
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,28 +18,24 @@ public class SecondActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
-    private List<Product> selectedProducts; // Change to List<Product>
+    private List<Product> selectedProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_activity);
 
-        // Initialize RecyclerView
         recyclerView = findViewById(R.id.selected_products_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Get selected products from the intent
         Product[] selectedProductsArray = (Product[]) getIntent().getSerializableExtra("selected_products");
 
         if (selectedProductsArray != null) {
-            selectedProducts = new ArrayList<>(Arrays.asList(selectedProductsArray)); // Initialize the list
-            // Set up adapter with selected products and bind it to RecyclerView
+            selectedProducts = new ArrayList<>(Arrays.asList(selectedProductsArray));
             productAdapter = new ProductAdapter(this, selectedProducts);
             recyclerView.setAdapter(productAdapter);
         }
 
-        // Set up the email button
         Button emailButton = findViewById(R.id.email_button);
         emailButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +44,8 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
     }
+
     private void sendEmail() {
-        // Build the email body
         StringBuilder emailBody = new StringBuilder();
         for (Product product : selectedProducts) {
             emailBody.append("Product Name: ").append(product.name)
@@ -58,24 +54,30 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("message/rfc822"); // Set the type to email
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"barre1ba@gmail.com"}); // Replace with the actual recipient's email
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sweng888mobileapps@gmail.com"});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Selected Products");
         emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody.toString());
 
-        // Check if there's an app to handle the email intent
         if (emailIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(Intent.createChooser(emailIntent, "Send email using:")); // Use chooser for better user experience
+            startActivityForResult(Intent.createChooser(emailIntent, "Send email using:"), 1);
+        } else {
+            Toast.makeText(this, "No email app found!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            // Show a Toast message indicating email was sent
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
             Toast.makeText(this, "Email sent successfully!", Toast.LENGTH_SHORT).show();
 
-            // Clear the selected products list and notify the adapter
-            selectedProducts.clear(); // Clear the list
-            productAdapter.notifyDataSetChanged(); // Notify adapter of data change
-        } else {
-            // Show a Toast message if no email app is found
-            Toast.makeText(this, "No email app found!", Toast.LENGTH_SHORT).show();
+            selectedProducts.clear();
+            productAdapter.notifyDataSetChanged();
+
+            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }

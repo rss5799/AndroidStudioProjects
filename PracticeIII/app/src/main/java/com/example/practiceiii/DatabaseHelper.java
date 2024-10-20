@@ -16,7 +16,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "products_database";
     private static final int DATABASE_VERSION = 1;
 
-    // Here we are declaring the table and columns
     public static final String TABLE_PRODUCTS = "products";
     public static final String KEY_ID = "id";
     public static final String KEY_NAME = "name";
@@ -57,6 +56,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_PRICE, product.price);
         values.put(KEY_IMAGE_RESOURCE, product.imageResource);
         db.insert(TABLE_PRODUCTS, null, values);
+        db.close();
+    }
+
+    public void clearProducts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_PRODUCTS);
         db.close();
     }
 
