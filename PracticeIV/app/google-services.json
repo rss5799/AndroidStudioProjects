@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "642418248869",
+    "project_id": "practiceiv-a3ff2",
+    "storage_bucket": "practiceiv-a3ff2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642418248869:android:4e216596788c703fb1d14c",
+        "android_client_info": {
+          "package_name": "com.example.practiceiv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-2AK6wpYmeXUXLHwb_syH6U01oXpM_08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
