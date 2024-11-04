@@ -12,34 +12,38 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
+    private FirebaseAuth auth; // Firebase Authentication instance
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_signup); // Set the layout for the activity
 
-        auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
 
-        EditText emailField = findViewById(R.id.email);
-        EditText passwordField = findViewById(R.id.password);
-        Button signupButton = findViewById(R.id.signup_button);
+        EditText emailField = findViewById(R.id.email); // Email input field
+        EditText passwordField = findViewById(R.id.password); // Password input field
+        Button signupButton = findViewById(R.id.signup_button); // Signup button
 
+        // Set click listener for the signup button
         signupButton.setOnClickListener(v -> {
-            String email = emailField.getText().toString();
-            String password = passwordField.getText().toString();
-            signupUser(email, password);
+            String email = emailField.getText().toString(); // Get email input
+            String password = passwordField.getText().toString(); // Get password input
+            signupUser(email, password); // Call signup method
         });
     }
 
+    // Method to create a new user with email and password
     private void signupUser(String email, String password) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        // Show success message
                         Toast.makeText(SignupActivity.this, "Registration Successful",
                                 Toast.LENGTH_SHORT).show();
-                        finish();
+                        finish(); // Close the activity
                     } else {
+                        // Show failure message
                         Toast.makeText(SignupActivity.this, "Registration Failed",
                                 Toast.LENGTH_SHORT).show();
                     }
