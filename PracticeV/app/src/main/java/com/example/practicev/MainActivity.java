@@ -25,21 +25,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Set up the Toolbar with a title
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("House I grew up in");
 
+        // Set up the Floating Action Button to show a toast on click
         binding.fab.setOnClickListener(view ->
                 Toast.makeText(MainActivity.this, "FAB Clicked!", Toast.LENGTH_SHORT).show()
         );
 
+        // Initialize the map and set it up asynchronously
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_container);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
 
+        // Set up the BottomNavigationView and its item selection listener
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) {
@@ -59,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng location = new LatLng(38.78176386961602, -76.8892122745587);  // Coordinates of the house
+        // Add a marker to the map at the specified coordinates
+        LatLng location = new LatLng(38.78176386961602, -76.8892122745587);  // Coordinates of my childhood house
         googleMap.addMarker(new MarkerOptions().position(location).title("House I grew up in!"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10f));
     }
